@@ -114,7 +114,7 @@ class Ui_MainWindow(object):
         MainWindow.setWindowTitle(_translate("MainWindow", "Convertisseur xml vers excel"))
         self.before_label.setText(_translate("MainWindow", "Avant planification"))
         self.after_label.setText(_translate("MainWindow", "Après planification"))
-        self.result_label.setText(_translate("MainWindow", "Déplacement prévu"))
+        self.result_label.setText(_translate("MainWindow", "Déplacement planifié"))
         self.open_button.setText(_translate("MainWindow", "Ouvrir"))
         self.save_button.setText(_translate("MainWindow", "Sauvegarder"))
 
@@ -192,7 +192,7 @@ class Ui_MainWindow(object):
 
 
     def calc_dif(self):
-        self.df_dif = pd.DataFrame(columns=['Repère', 'X\n+ : Décalage à gauche\n- : Décalage à droite', 'Y\n+ : recule\n- : avancée', 'Z\n+ : impaction\n- : épaction'])
+        self.df_dif = pd.DataFrame(columns=['Repère', 'X\n+ : Décalage à gauche\n- : Décalage à droite', 'Y\n+ : recul\n- : avancée', 'Z\n+ : impaction\n- : épaction'])
         self.df_dif
 
         try:
@@ -234,7 +234,7 @@ class Ui_MainWindow(object):
 
                 writer.sheets['Déplacement'].merge_range(f"A1:{chr(65 + self.df.shape[1])}1", "Avant planification", merge_format)
                 writer.sheets['Déplacement'].merge_range(f"{chr(65 + self.df.shape[1]+3)}1:{chr(65 + self.df.shape[1]*2+3)}1", "Après planification", merge_format)
-                writer.sheets['Déplacement'].merge_range(f"{chr(65 + self.df.shape[1]*2+6)}1:{chr(65 + self.df.shape[1]*3+6)}1", "Déplacement prévu", merge_format)
+                writer.sheets['Déplacement'].merge_range(f"{chr(65 + self.df.shape[1]*2+6)}1:{chr(65 + self.df.shape[1]*3+6)}1", "Déplacement planifié", merge_format)
 
                 writer.sheets['Déplacement'].set_column(f'B:{chr(65 + self.df.shape[1])}', None, format)
                 writer.sheets['Déplacement'].set_column(f'{chr(65 + self.df.shape[1]+3)}:{chr(65 + self.df.shape[1]+3 + self.df_dif.shape[1])}', None, format)
