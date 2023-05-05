@@ -37,7 +37,7 @@ QWidget
 /*-----QLabel-----*/
 QLabel
 {
-	background-color: #404040;
+	background-color: #121212;
 	color: #ffffff;
 	font-weight: bold;
 	font-family : Trebuchet MS;
