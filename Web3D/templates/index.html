@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Modèle 3D OBJ interactif</title>
+    <script src="https://cdn.rawgit.com/mrdoob/three.js/r128/build/three.min.js"></script>
+    <script src="https://cdn.rawgit.com/mrdoob/three.js/r128/examples/js/controls/OrbitControls.js"></script>
+    <!-- <script src="https://cdn.rawgit.com/mrdoob/three.js/r128/examples/js/loaders/OBJLoader.js"></script> -->
+    <script src="https://cdn.rawgit.com/mrdoob/three.js/r128/examples/js/loaders/STLLoader.js"></script>
+  </head>
+  <body>
+    <h1>Modèle 3D OBJ interactif</h1>
+    <div id="canvas-container"></div>
+    <script>
+      var scene = new THREE.Scene();
+      var camera = new THREE.PerspectiveCamera(75, window.innerWidth/window.innerHeight, 0.1, 1000);
+      var renderer = new THREE.WebGLRenderer();
+      renderer.setSize(window.innerWidth, window.innerHeight);
+      document.getElementById('canvas-container').appendChild(renderer.domElement);
+      
+      var controls = new THREE.OrbitControls(camera, renderer.domElement);
+
+      var loader = new THREE.STLLoader();
+      loader.load('/static/models/model.stl', function(object) {
+        scene.add(object);
+      });
+
+      var light = new THREE.AmbientLight(0xD3D3D3);
+      scene.add(light);
+
+      camera.position.z = 5;
+
+      function animate() {
+        requestAnimationFrame(animate);
+        controls.update();
+        renderer.render(scene, camera);
+      }
+      animate();
+    </script>
+  </body>
+</html>
