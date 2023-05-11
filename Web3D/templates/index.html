@@ -4,7 +4,7 @@
     <title>Modèle 3D OBJ interactif</title>
     <script src="https://cdn.rawgit.com/mrdoob/three.js/r128/build/three.min.js"></script>
     <script src="https://cdn.rawgit.com/mrdoob/three.js/r128/examples/js/controls/OrbitControls.js"></script>
-    <!-- <script src="https://cdn.rawgit.com/mrdoob/three.js/r128/examples/js/loaders/OBJLoader.js"></script> -->
+    <script src="https://cdn.rawgit.com/mrdoob/three.js/r128/examples/js/loaders/OBJLoader.js"></script>
     <script src="https://cdn.rawgit.com/mrdoob/three.js/r128/examples/js/loaders/STLLoader.js"></script>
   </head>
   <body>
@@ -20,8 +20,8 @@
       var controls = new THREE.OrbitControls(camera, renderer.domElement);
 
       var loader = new THREE.STLLoader();
-      loader.load('/static/models/model.stl', function(object) {
-        scene.add(object);
+      loader.load('/static/models/model.stl', function(geometry) {
+        scene.add(new THREE.Mesh( geometry ));
       });
 
       var light = new THREE.AmbientLight(0xD3D3D3);
