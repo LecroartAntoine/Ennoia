@@ -1,4 +1,4 @@
-import win32gui, win32con, pyautogui
+import win32gui, win32con, pyautogui, os
 
 def take_screenshot():
     try:
@@ -6,7 +6,7 @@ def take_screenshot():
         def enum_cb(hwnd, _):
             winlist.append((hwnd, win32gui.GetWindowText(hwnd)))
         win32gui.EnumWindows(enum_cb, a)
-        window = [(hwnd, title) for hwnd, title in winlist if '3d slicer' in title.lower()]
+        window = [(hwnd, title) for hwnd, title in winlist if 'materialise' in title.lower()]
 
         hwnd = window[0][0]
 
@@ -14,73 +14,46 @@ def take_screenshot():
         win32gui.BringWindowToTop(hwnd)
         win32gui.SetForegroundWindow(hwnd)
         pos = win32gui.GetWindowRect(hwnd)
-        bbox = (pos[0]+900, pos[1]+290, pos[2]-1410, pos[3]-460)
+        bbox = (pos[0]+200, pos[1]+185, pos[2]-975, pos[3]-400)
 
-        pyautogui.press('num1') 
-        pyautogui.press('r') 
+        pyautogui.press('num7')
+        pyautogui.keyDown('alt')
+        pyautogui.press('z')
+        pyautogui.keyUp('alt')
         
         p = pyautogui.screenshot(region=bbox)
-        p.save('Temp/front.png')
+        p.save(f'{os.path.join(os.path.dirname(os.path.abspath(__file__)), "Temp/front.png")}')
 
         pyautogui.press('num2')
-        pyautogui.press('num2')
-        pyautogui.press('num2')
-        pyautogui.press('r') 
+        pyautogui.keyDown('alt')
+        pyautogui.press('z')
+        pyautogui.keyUp('alt')
 
         p = pyautogui.screenshot(region=bbox)
-        p.save('Temp/bottom45.png')
+        p.rotate(180).save(f'{os.path.join(os.path.dirname(os.path.abspath(__file__)), "Temp/bottom.png")}')
 
-        pyautogui.press('num2')
-        pyautogui.press('num2')
-        pyautogui.press('num2')
-        pyautogui.press('r') 
-        
-        p = pyautogui.screenshot(region=bbox)
-        p.save('Temp/bottom.png')
+        bbox = (pos[0]+325, pos[1]+185, pos[2]-1100, pos[3]-400)
 
-        pyautogui.press('num3')
-        pyautogui.press('r') 
+        pyautogui.press('num6')
+        pyautogui.keyDown('alt')
+        pyautogui.press('z')
+        pyautogui.keyUp('alt') 
 
         p = pyautogui.screenshot(region=bbox)
-        p.save('Temp/left.png')
+        p.save(f'{os.path.join(os.path.dirname(os.path.abspath(__file__)), "Temp/left.png")}')
 
         pyautogui.press('num4')
-        pyautogui.press('num4')
-        pyautogui.press('num4')
-        pyautogui.press('r') 
+        pyautogui.keyDown('alt')
+        pyautogui.press('z')
+        pyautogui.keyUp('alt')
 
-        p = pyautogui.screenshot(region=bbox)
-        p.save('Temp/left45.png')
-
-        pyautogui.press('num1')
-        pyautogui.press('num4')
-        pyautogui.press('num4')
-        pyautogui.press('num4')
-        pyautogui.press('r') 
+        bbox = (pos[0]+200, pos[1]+185, pos[2]-1100, pos[3]-400)
 
         p = pyautogui.screenshot(region=bbox)
-        p.save('Temp/right45.png')
+        p.save(f'{os.path.join(os.path.dirname(os.path.abspath(__file__)), "Temp/right.png")}')
 
-        pyautogui.press('num4')
-        pyautogui.press('num4')
-        pyautogui.press('num4')
-        pyautogui.press('r') 
-
-        p = pyautogui.screenshot(region=bbox)
-        p.save('Temp/right.png')
-
-        pyautogui.press('num1')
-        pyautogui.press('num8')
-        pyautogui.press('num8')
-        pyautogui.press('num8')
-        pyautogui.press('r') 
-
-        p = pyautogui.screenshot(region=bbox)
-        p.save('Temp/front45.png')
-        pyautogui.press('r') 
-
-        win32gui.ShowWindow(hwnd, win32con.SW_MINIMIZE)
         return(True)
     
     except:
         return(False)
+

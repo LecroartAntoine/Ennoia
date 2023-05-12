@@ -35,7 +35,7 @@ class Ui_MainWindow(object):
 
     def retranslateUi(self, MainWindow):
         _translate = QtCore.QCoreApplication.translate
-        MainWindow.setWindowTitle(_translate("MainWindow", "Pptx Maker"))
+        MainWindow.setWindowTitle(_translate("MainWindow", "CMF PPTX"))
         self.SaveButton.setText(_translate("MainWindow", "Emplacement de sauvegarde"))
         self.StartButton.setText(_translate("MainWindow", "Lancer la création de pptx"))
 
@@ -58,6 +58,14 @@ class Ui_MainWindow(object):
 
             msg.setWindowTitle("")
             msg.exec_()
+        else :
+            msg = QtWidgets.QMessageBox()
+            
+            msg.setText('Succès')
+
+            msg.setWindowTitle("")
+            msg.exec_()
+
 
 if __name__ == "__main__":
     app = QtWidgets.QApplication(sys.argv)
