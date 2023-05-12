@@ -29,7 +29,7 @@ class PandasModel(QtCore.QAbstractTableModel):
             except :
                 return str(self._dataframe.iloc[index.row()][index.column()])
             
-        if role == QtCore.Qt.BackgroundRole and self._dataframe.iloc[index.row()][index.column()] == 'x':
+        if role == QtCore.Qt.BackgroundRole and self._dataframe.iloc[index.row()][index.column()] == 'X':
             return QtGui.QColor('red')
 
         return None
@@ -359,7 +359,7 @@ class Ui_MainWindow(object):
             for mistake in mistakes:
                 point = mistake[:1] + str((int(mistake[1]) - 1) * -1) + mistake[2:]
 
-                self.df.loc[point] = ('x', 'x', 'x')
+                self.df.loc[point] = ('X', 'X', 'X')
                 self.df.sort_index(key=lambda x: x.str.lower(), axis = 0, inplace = True)
 
 
@@ -387,7 +387,7 @@ class Ui_MainWindow(object):
         try :
             return (float(i) - float(j))
         except:
-            return ('x')
+            return ('X')
 
 
     def save(self, MainWindow):
@@ -404,17 +404,19 @@ class Ui_MainWindow(object):
                 format = writer.book.add_format({'num_format': '0.0'})
                 format_neg = writer.book.add_format({'num_format': '0.0', 'color' : 'red'})
                 format_pos = writer.book.add_format({'num_format': '0.0', 'color' : 'green'})
-                format_miss = writer.book.add_format({'bg_color' : '#fa0000'})
+                format_miss = writer.book.add_format({'bg_color' : 'red', 'color' : 'black'})
 
                 merge_format = writer.book.add_format({"bold": 1, "border": 1, "align": "center", "valign": "vcenter", "fg_color": "#008db9"})
+                header_format = writer.book.add_format()
+                header_format.set_text_wrap()
 
-                writer.sheets['Déplacement'].conditional_format(f'{chr(65 + self.df.shape[1]*2+7)}2:{chr(65 + self.df.shape[1]*2+6 + self.df_dif.shape[1])}{self.df_dif.shape[0]+2}', {'type' : 'cell', 'criteria' : '<', 'value' : 0, 'format' : format_neg})
-                writer.sheets['Déplacement'].conditional_format(f'{chr(65 + self.df.shape[1]*2+7)}2:{chr(65 + self.df.shape[1]*2+6 + self.df_dif.shape[1])}{self.df_dif.shape[0]+2}', {'type' : 'cell', 'criteria' : '>=', 'value' : 0, 'format' : format_pos})
-                writer.sheets['Déplacement'].conditional_format(f'A2:{chr(65 + self.df.shape[1]*2+6 + self.df_dif.shape[1])}{self.df_dif.shape[0]+2}',{'type' : 'cell', 'criteria' : '=', 'value' : 'x', 'format' : format_miss})
+                writer.sheets['Déplacement'].add_table(f'A2:{chr(65 + self.df.shape[1])}{len(self.break_point_inf)+2}', {'style': 'Table Style Medium 2','header_row': False,'first_column': True})
+                writer.sheets['Déplacement'].add_table(f'{chr(65 + self.df.shape[1]+3)}2:{chr(65 + self.df.shape[1]*2+3)}{len(self.break_point_sup)+2}', {'style': 'Table Style Medium 2','header_row': False,'first_column': True})
+                writer.sheets['Déplacement'].add_table(f'{chr(65 + self.df.shape[1]*2+6)}2:{chr(65 + self.df.shape[1]*2+6 + self.df_dif.shape[1])}{self.df_dif.shape[0]+2}', {'style': 'Table Style Light 9','header_row': False,'first_column': True})
 
-                writer.sheets['Déplacement'].add_table(f'A2:{chr(65 + self.df.shape[1])}{len(self.break_point_inf)+2}', {'style': 'Table Style Medium 2','header_row': False})
-                writer.sheets['Déplacement'].add_table(f'{chr(65 + self.df.shape[1]+3)}2:{chr(65 + self.df.shape[1]*2+3)}{len(self.break_point_sup)+2}', {'style': 'Table Style Medium 2','header_row': False})
-                writer.sheets['Déplacement'].add_table(f'{chr(65 + self.df.shape[1]*2+6)}2:{chr(65 + self.df.shape[1]*2+6 + self.df_dif.shape[1])}{self.df_dif.shape[0]+2}', {'style': 'Table Style Light 9','header_row': False})
+                writer.sheets['Déplacement'].conditional_format(f'{chr(65 + self.df.shape[1]*2+7)}3:{chr(65 + self.df.shape[1]*2+6 + self.df_dif.shape[1])}{self.df_dif.shape[0]+2}', {'type' : 'cell', 'criteria' : '<', 'value' : 0, 'format' : format_neg})
+                writer.sheets['Déplacement'].conditional_format(f'{chr(65 + self.df.shape[1]*2+7)}3:{chr(65 + self.df.shape[1]*2+6 + self.df_dif.shape[1])}{self.df_dif.shape[0]+2}', {'type' : 'cell', 'criteria' : '>=', 'value' : 0, 'format' : format_pos})
+                writer.sheets['Déplacement'].conditional_format(f'A3:{chr(65 + self.df.shape[1]*2+6 + self.df_dif.shape[1])}{self.df_dif.shape[0]+2}',{'type' : 'text', 'criteria' : 'containing', 'value' : 'X', 'format' : format_miss})
 
                 writer.sheets['Déplacement'].merge_range(f"A1:{chr(65 + self.df.shape[1])}1", "Avant planification", merge_format)
                 writer.sheets['Déplacement'].merge_range(f"{chr(65 + self.df.shape[1]+3)}1:{chr(65 + self.df.shape[1]*2+3)}1", "Après planification", merge_format)
@@ -423,7 +425,7 @@ class Ui_MainWindow(object):
                 writer.sheets['Déplacement'].set_column(f'B:{chr(65 + self.df.shape[1])}', None, format)
                 writer.sheets['Déplacement'].set_column(f'{chr(65 + self.df.shape[1]+3)}:{chr(65 + self.df.shape[1]+3 + self.df_dif.shape[1])}', None, format)
 
-                writer.sheets['Déplacement'].set_row(1, 40)
+                writer.sheets['Déplacement'].set_row(1, 45, header_format)
 
                 writer.sheets['Déplacement'].set_column(f'{chr(65 + self.df.shape[1]*2+7)}:{chr(65 + self.df.shape[1]*2+6 + self.df_dif.shape[1])}', 22)
 
