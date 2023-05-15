@@ -1,11 +1,12 @@
 from PyQt5 import QtCore, QtGui, QtWidgets
 import sys, os
 import pandas as pd
-   
+
 class PandasModel(QtCore.QAbstractTableModel):
-    def __init__(self, dataframe: pd.DataFrame, parent=None):
+    def __init__(self, dataframe: pd.DataFrame, result = False, parent=None):
         QtCore.QAbstractTableModel.__init__(self, parent)
         self._dataframe = dataframe
+        self.result = result
 
     def rowCount(self, parent=QtCore.QModelIndex()) -> int:
         if parent == QtCore.QModelIndex():
@@ -22,15 +23,25 @@ class PandasModel(QtCore.QAbstractTableModel):
         if not index.isValid():
             return None
 
-        if role == QtCore.Qt.DisplayRole:
+        elif role == QtCore.Qt.DisplayRole:
             try :
-                x = round(self._dataframe.iloc[index.row()][index.column()], 2)
+                x = round(self._dataframe.iloc[index.row()][index.column()], 1)
                 return str(x)
             except :
                 return str(self._dataframe.iloc[index.row()][index.column()])
             
-        if role == QtCore.Qt.BackgroundRole and self._dataframe.iloc[index.row()][index.column()] == 'X':
+        elif role == QtCore.Qt.BackgroundRole and self._dataframe.iloc[index.row()][index.column()] == 'X':
             return QtGui.QColor('red')
+        
+        if self.result :
+            if role == QtCore.Qt.TextColorRole and self._dataframe.iloc[index.row()][index.column()] == 'X':
+                return QtGui.QColor('white')
+            
+            elif role == QtCore.Qt.TextColorRole and self._dataframe.iloc[index.row()][index.column()] < 0:
+                return QtGui.QColor('red')
+            
+            elif role == QtCore.Qt.TextColorRole and self._dataframe.iloc[index.row()][index.column()] >= 0:
+                return QtGui.QColor('green')
 
         return None
 
@@ -51,19 +62,11 @@ class MyBar(QtWidgets.QWidget):
     def __init__(self, parent):
         super(MyBar, self).__init__()
         self.parent = parent
-        self.layout = QtWidgets.QHBoxLayout()
-        self.layout.setContentsMargins(0,20,0,5)
-        self.pressing = False
-
-        self.title = QtWidgets.QLabel("""
-                                        <div>
-                                        <img style="vertical-align:middle;text-align:center;float:left;" src="Assets:Logo_small.png" width="40" height="40">
-                                        <span>Déplacement céphalométrique</span>
-                                        </div>
-                                    """)
+        self.Barlayout = QtWidgets.QHBoxLayout()
+        self.Barlayout.setContentsMargins(0,0,0,0)
         
-        self.title.setStyleSheet("background-color: #404040;color: #ffffff;font-weight: bold;font-family : Trebuchet MS;font-size : 20px;")
-
+        self.title = QtWidgets.QLabel("Déplacement céphalométrique")
+        
         btn_size = 50
 
         self.btn_close = QtWidgets.QPushButton("")
@@ -75,18 +78,18 @@ class MyBar(QtWidgets.QWidget):
             QPushButton 
             {
                 border-width: 5px; 
-                border-color: #404040;
+                border-color: #242526;
             }
             QPushButton::hover
             {
                 background-color: #8399ff;
                 border-width: 3px;
-                border-color: #404040;
+                border-color: #242526;
             }
             QPushButton::pressed
             {
                 background-color: #4969ff;
-                border-color: #404040;
+                border-color: #242526;
             }
         """)
 
@@ -99,18 +102,18 @@ class MyBar(QtWidgets.QWidget):
             QPushButton 
             {
                 border-width: 5px; 
-                border-color: #404040;
+                border-color: #242526;
             }
             QPushButton::hover
             {
                 background-color: #8399ff;
                 border-width: 3px;
-                border-color: #404040;
+                border-color: #242526;
             }
             QPushButton::pressed
             {
                 background-color: #4969ff;
-                border-color: #404040;
+                border-color: #242526;
             }
         """)
         
@@ -124,74 +127,97 @@ class MyBar(QtWidgets.QWidget):
             QPushButton 
             {
                 border-width: 5px; 
-                border-color: #404040;
+                border-color: #242526;
             }
             QPushButton::hover
             {
                 background-color: #8399ff;
                 border-width: 3px;
-                border-color: #404040;
+                border-color: #242526;
             }
             QPushButton::pressed
             {
                 background-color: #4969ff;
-                border-color: #404040;
+                border-color: #242526;
             }
         """)
 
         self.title.setFixedHeight(50)
         self.title.setAlignment(QtCore.Qt.AlignCenter)
-        self.layout.addWidget(self.title)
-        self.layout.addWidget(self.btn_min)
-        self.layout.addWidget(self.btn_max)
-        self.layout.addWidget(self.btn_close)
+        self.Barlayout.addWidget(self.title)
+        self.Barlayout.addWidget(self.btn_min)
+        self.Barlayout.addWidget(self.btn_max)
+        self.Barlayout.addWidget(self.btn_close)
 
         self.title.setStyleSheet("""
-            background-color: #404040;
+            background-color: #242526;
             color: white;
             font-weight: bold;
             font-family : Trebuchet MS;
             font-size : 30px;
         """)
-        self.setLayout(self.layout)
-
+        self.setLayout(self.Barlayout)
         self.start = QtCore.QPoint(0, 0)
         self.pressing = False
+        self.title.mouseMoveEvent = self.mouseMoveEvent
+        self.title.mousePressEvent = self.mousePressEvent
+        self.title.mouseReleaseEvent = self.mouseReleaseEvent
+
+        self.icon = QtWidgets.QLabel(self.parent)
+        self.icon.setPixmap(QtGui.QPixmap("Assets:Logo2.png").scaledToHeight(40, QtCore.Qt.SmoothTransformation))
+        self.icon.setContentsMargins(5, 5, 0 , 5)
+        self.icon.setGeometry(QtCore.QRect(0, 0, 160, 50))
+        self.icon.setStyleSheet("background-color: #242526;")
+        self.icon.mouseMoveEvent = self.mouseMoveEvent
+        self.icon.mousePressEvent = self.mousePressEvent
+        self.icon.mouseReleaseEvent = self.mouseReleaseEvent
 
     def resizeEvent(self, QResizeEvent):
         super(MyBar, self).resizeEvent(QResizeEvent)
         self.title.resize(self.parent.width(), self.parent.height())
 
     def mousePressEvent(self, event):
-        self.start = self.mapToGlobal(event.pos())
-        self.pressing = True
-
+        if event.buttons() == QtCore.Qt.LeftButton:
+            self.start = self.mapToGlobal(event.pos())
+            self.pressing = True
+            
     def mouseMoveEvent(self, event):
         if self.pressing:
-            self.end = self.mapToGlobal(event.pos())
-            self.movement = self.end-self.start
-            self.parent.setGeometry(self.mapToGlobal(self.movement).x(),
-                                self.mapToGlobal(self.movement).y(),
-                                self.parent.width(),
-                                self.parent.height())
-            self.start = self.end
+            if self.parent.isFullScreen():
+                self.parent.showNormal()
+                self.parent.move(QtGui.QCursor.pos().x() - self.parent.width() // 2, 0)
+                
+
+            else :
+                self.end = self.mapToGlobal(event.pos())
+                self.movement = self.end-self.start
+                self.parent.setGeometry(self.mapToGlobal(self.movement).x(),
+                                    self.mapToGlobal(self.movement).y(),
+                                    self.parent.width(),
+                                    self.parent.height())
+                self.start = self.end
 
     def mouseReleaseEvent(self, QMouseEvent):
         self.pressing = False
+        if self.parent.pos().y() < 0:
+            self.parent.move(self.parent.pos().x(), 0)
+            self.parent.showFullScreen()
+
 
     def btn_close_clicked(self):
         self.parent.close()
 
     def btn_max_clicked(self):
-        if int(self.parent.windowState()) == 0:
-            self.parent.showMaximized()
-            self.btn_max.setIcon(QtGui.QIcon('Assets:max_inv.png'))
-        elif int(self.parent.windowState()) == 2:
+        if self.parent.isFullScreen():
             self.parent.showNormal()
             self.btn_max.setIcon(QtGui.QIcon('Assets:max.png'))
+        else:
+            self.parent.showFullScreen()
+            self.btn_max.setIcon(QtGui.QIcon('Assets:max_inv.png'))
         
     def btn_min_clicked(self):
         self.parent.showMinimized()
+    
 
 class Ui_MainWindow(object):
     def setupUi(self, MainWindow):
@@ -199,13 +225,15 @@ class Ui_MainWindow(object):
         self.fenetre = QtWidgets.QWidget(MainWindow)
         self.fenetre.setObjectName("fenetre")
         
+        
         self.main_layout = QtWidgets.QVBoxLayout(self.fenetre)
         self.main_layout.setObjectName("page_layout")
 
         self.main_layout.addWidget(MyBar(MainWindow))
+
         self.main_layout.setContentsMargins(0,0,0,0)
         MainWindow.resize(1400,800)
-        MainWindow.setWindowFlags(QtCore.Qt.FramelessWindowHint)
+        MainWindow.setWindowFlags(QtCore.Qt.CustomizeWindowHint | QtCore.Qt.FramelessWindowHint)
 
         self.page_layout = QtWidgets.QVBoxLayout()
         self.page_layout.setObjectName("page_layout")
@@ -320,7 +348,7 @@ class Ui_MainWindow(object):
         
             self.calc_dif()
 
-            model = PandasModel(self.df_dif)
+            model = PandasModel(self.df_dif, True)
             self.result_table.setModel(model)
             self.result_table.horizontalHeader().setSectionResizeMode(QtWidgets.QHeaderView.Stretch)
             self.result_table.verticalHeader().setSectionResizeMode(QtWidgets.QHeaderView.Stretch)

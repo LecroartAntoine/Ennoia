@@ -6,7 +6,7 @@ QWidget
 	border-color: #051a39;
 	font-weight: bold;
 	font-family : Trebuchet MS;
-	font-size : 11px;
+	font-size : 20px;
 
 }
 
@@ -18,7 +18,7 @@ QLabel
 	color: #ffffff;
 	font-weight: bold;
 	font-family : Trebuchet MS;
-	font-size : 11px;
+	font-size : 20px;
 
 
 }
@@ -44,7 +44,7 @@ QMenuBar
 
 QMenuBar::disabled
 {
-	background-color: #404040;
+	background-color: #242526;
 	color: #656565;
 	border-color: #051a39;
 
@@ -143,14 +143,14 @@ QPushButton
 	padding: 5px;
 	font-weight: bold;
 	font-family : Trebuchet MS;
-	font-size : 11px;
+	font-size : 20px;
 
 }
 
 
 QPushButton::disabled
 {
-	background-color: #404040;
+	background-color: #242526;
 	color: #656565;
 	border-color: #121212;
 
@@ -198,7 +198,7 @@ QToolButton
 
 QToolButton::disabled
 {
-	background-color: #404040;
+	background-color: #242526;
 	color: #656565;
 	border-color: #051a39;
 
@@ -244,7 +244,7 @@ QComboBox
 
 QComboBox::disabled
 {
-	background-color: #404040;
+	background-color: #242526;
 	color: #656565;
 	border-color: #051a39;
 
@@ -317,7 +317,7 @@ QSpinBox::disabled,
 QDoubleSpinBox::disabled,
 QDateTimeEdit::disabled
 {
-	background-color: #404040;
+	background-color: #242526;
 	color: #656565;
 	border-color: #051a39;
 
@@ -350,7 +350,7 @@ QSpinBox::disabled,
 QDoubleSpinBox::disabled,
 QDateTimeEdit::disabled
 {
-	background-color: #404040;
+	background-color: #242526;
 	color: #656565;
 	border-color: #051a39;
 
@@ -371,7 +371,7 @@ QSpinBox::up-button:disabled, QSpinBox::down-button:disabled,
 QDoubleSpinBox::up-button:disabled, QDoubleSpinBox::down-button:disabled,
 QDateTimeEdit::up-button:disabled, QDateTimeEdit::down-button:disabled
 {
-	background-color: #404040;
+	background-color: #242526;
 	color: #656565;
 	border-color: #051a39;
 
@@ -423,7 +423,7 @@ QLineEdit
 
 QLineEdit::disabled
 {
-	background-color: #404040;
+	background-color: #242526;
 	color: #656565;
 	border-width: 1px;
 	border-radius: 3px;
@@ -445,7 +445,7 @@ QTextEdit
 
 QTextEdit::disabled
 {
-	background-color: #404040;
+	background-color: #242526;
 	color: #656565;
 	border-color: #051a39;
 
@@ -477,7 +477,7 @@ QGroupBox::title
 
 QGroupBox::title::disabled
 {
-	background-color: #404040;
+	background-color: #242526;
 	color: #656565;
     subcontrol-origin: margin;
     subcontrol-position: top left;
@@ -751,7 +751,7 @@ QTabBar::tab:selected
 
 QTabBar::tab:selected:disabled
 {
-	background-color: #404040;
+	background-color: #242526;
 	color: #656565;
 
 }
@@ -1004,7 +1004,7 @@ QDial
 
 QDial::disabled
 {
-	background-color: #404040;
+	background-color: #242526;
 
 }
 

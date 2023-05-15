@@ -1,26 +1,3 @@
-/*Copyright (c) DevSec Studio. All rights reserved.
-
-MIT License
-
-Permission is hereby granted, free of charge, to any person obtaining a copy
-of this software and associated documentation files (the "Software"), to deal
-in the Software without restriction, including without limitation the rights
-to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
-copies of the Software, and to permit persons to whom the Software is
-furnished to do so, subject to the following conditions:
-
-The above copyright notice and this permission notice shall be included in all
-copies or substantial portions of the Software.
-
-THE SOFTWARE IS PROVIDED *AS IS*, WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
-IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
-FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
-AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
-LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
-OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
-SOFTWARE.
-*/
-
 /*-----QWidget-----*/
 QWidget
 {
@@ -67,7 +44,7 @@ QMenuBar
 
 QMenuBar::disabled
 {
-	background-color: #404040;
+	background-color: #242526;
 	color: #656565;
 	border-color: #051a39;
 
@@ -173,7 +150,7 @@ QPushButton
 
 QPushButton::disabled
 {
-	background-color: #404040;
+	background-color: #242526;
 	color: #656565;
 	border-color: #121212;
 
@@ -221,7 +198,7 @@ QToolButton
 
 QToolButton::disabled
 {
-	background-color: #404040;
+	background-color: #242526;
 	color: #656565;
 	border-color: #051a39;
 
@@ -267,7 +244,7 @@ QComboBox
 
 QComboBox::disabled
 {
-	background-color: #404040;
+	background-color: #242526;
 	color: #656565;
 	border-color: #051a39;
 
@@ -340,7 +317,7 @@ QSpinBox::disabled,
 QDoubleSpinBox::disabled,
 QDateTimeEdit::disabled
 {
-	background-color: #404040;
+	background-color: #242526;
 	color: #656565;
 	border-color: #051a39;
 
@@ -373,7 +350,7 @@ QSpinBox::disabled,
 QDoubleSpinBox::disabled,
 QDateTimeEdit::disabled
 {
-	background-color: #404040;
+	background-color: #242526;
 	color: #656565;
 	border-color: #051a39;
 
@@ -394,7 +371,7 @@ QSpinBox::up-button:disabled, QSpinBox::down-button:disabled,
 QDoubleSpinBox::up-button:disabled, QDoubleSpinBox::down-button:disabled,
 QDateTimeEdit::up-button:disabled, QDateTimeEdit::down-button:disabled
 {
-	background-color: #404040;
+	background-color: #242526;
 	color: #656565;
 	border-color: #051a39;
 
@@ -446,7 +423,7 @@ QLineEdit
 
 QLineEdit::disabled
 {
-	background-color: #404040;
+	background-color: #242526;
 	color: #656565;
 	border-width: 1px;
 	border-radius: 3px;
@@ -468,7 +445,7 @@ QTextEdit
 
 QTextEdit::disabled
 {
-	background-color: #404040;
+	background-color: #242526;
 	color: #656565;
 	border-color: #051a39;
 
@@ -500,7 +477,7 @@ QGroupBox::title
 
 QGroupBox::title::disabled
 {
-	background-color: #404040;
+	background-color: #242526;
 	color: #656565;
     subcontrol-origin: margin;
     subcontrol-position: top left;
@@ -774,7 +751,7 @@ QTabBar::tab:selected
 
 QTabBar::tab:selected:disabled
 {
-	background-color: #404040;
+	background-color: #242526;
 	color: #656565;
 
 }
@@ -1027,7 +1004,7 @@ QDial
 
 QDial::disabled
 {
-	background-color: #404040;
+	background-color: #242526;
 
 }
 
