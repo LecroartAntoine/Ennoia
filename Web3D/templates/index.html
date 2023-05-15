@@ -8,7 +8,7 @@
     <script src="https://cdn.rawgit.com/mrdoob/three.js/r128/examples/js/loaders/STLLoader.js"></script>
   </head>
   <body>
-    <h1>Modèle 3D OBJ interactif</h1>
+    <h1>3D Viewer</h1>
     <div id="canvas-container"></div>
     <script>
       var scene = new THREE.Scene();
@@ -20,7 +20,7 @@
       var controls = new THREE.OrbitControls(camera, renderer.domElement);
 
       var loader = new THREE.STLLoader();
-      loader.load('/static/models/model.stl', function(geometry) {
+      loader.load('/static/models/stl/TISSUS MOUS.stl', function(geometry) {
         scene.add(new THREE.Mesh( geometry ));
       });
 
