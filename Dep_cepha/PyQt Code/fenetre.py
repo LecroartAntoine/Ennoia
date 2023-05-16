@@ -322,48 +322,65 @@ class Ui_MainWindow(object):
         if ok:
             self.df = self.create_dataframe()
 
-            self.check_mistake()
+            if not self.df.empty:
 
-            self.break_point_inf = [value for value in self.df.index.tolist() if value[:2] == '00']
-            self.break_point_sup = [value for value in self.df.index.tolist() if value[:2] != '00']
-            self.df_before = self.df.loc[:self.break_point_inf[-1]]
-            self.df_after = self.df.loc[self.break_point_sup[0]:]
+                self.check_mistake()
 
-            self.df_before = self.df.loc[:self.break_point_inf[-1]].reset_index()
-            self.df_after = self.df.loc[self.break_point_sup[0]:].reset_index()
-            self.df_before['Repère'] = self.df_before['Repère'].apply(lambda x : x[2:])
-            self.df_after['Repère'] = self.df_after['Repère'].apply(lambda x : x[2:])
-            self.df_before.set_index('Repère', inplace=True)
-            self.df_after.set_index('Repère', inplace=True)
+                self.break_point_inf = [value for value in self.df.index.tolist() if value[:2] == '00']
+                self.break_point_sup = [value for value in self.df.index.tolist() if value[:2] != '00']
+                self.df_before = self.df.loc[:self.break_point_inf[-1]]
+                self.df_after = self.df.loc[self.break_point_sup[0]:]
 
-            model = PandasModel(self.df_before)
-            self.data_table_before.setModel(model)
-            self.data_table_before.horizontalHeader().setSectionResizeMode(QtWidgets.QHeaderView.Stretch)
-            self.data_table_before.verticalHeader().setSectionResizeMode(QtWidgets.QHeaderView.Stretch)
+                self.df_before = self.df.loc[:self.break_point_inf[-1]].reset_index()
+                self.df_after = self.df.loc[self.break_point_sup[0]:].reset_index()
+                self.df_before['Repère'] = self.df_before['Repère'].apply(lambda x : x[2:])
+                self.df_after['Repère'] = self.df_after['Repère'].apply(lambda x : x[2:])
+                self.df_before.set_index('Repère', inplace=True)
+                self.df_after.set_index('Repère', inplace=True)
+
+                model = PandasModel(self.df_before)
+                self.data_table_before.setModel(model)
+                self.data_table_before.horizontalHeader().setSectionResizeMode(QtWidgets.QHeaderView.Stretch)
+                self.data_table_before.verticalHeader().setSectionResizeMode(QtWidgets.QHeaderView.Stretch)
+                
+                model = PandasModel(self.df_after)
+                self.data_table_after.setModel(model)
+                self.data_table_after.horizontalHeader().setSectionResizeMode(QtWidgets.QHeaderView.Stretch)
+                self.data_table_after.verticalHeader().setSectionResizeMode(QtWidgets.QHeaderView.Stretch)
             
-            model = PandasModel(self.df_after)
-            self.data_table_after.setModel(model)
-            self.data_table_after.horizontalHeader().setSectionResizeMode(QtWidgets.QHeaderView.Stretch)
-            self.data_table_after.verticalHeader().setSectionResizeMode(QtWidgets.QHeaderView.Stretch)
-        
-            self.calc_dif()
+                self.calc_dif()
 
-            model = PandasModel(self.df_dif, True)
-            self.result_table.setModel(model)
-            self.result_table.horizontalHeader().setSectionResizeMode(QtWidgets.QHeaderView.Stretch)
-            self.result_table.verticalHeader().setSectionResizeMode(QtWidgets.QHeaderView.Stretch)
+                model = PandasModel(self.df_dif, True)
+                self.result_table.setModel(model)
+                self.result_table.horizontalHeader().setSectionResizeMode(QtWidgets.QHeaderView.Stretch)
+                self.result_table.verticalHeader().setSectionResizeMode(QtWidgets.QHeaderView.Stretch)
+            else:
+                msg = QtWidgets.QMessageBox()
+                msg.setIcon(QtWidgets.QMessageBox.Critical)
+                
+                msg.setText(f"Fichier corrompu")
+            
+                msg.setWindowTitle("Erreur")
+
+                msg.exec_()
    
 
     def create_dataframe(self):
-        df = pd.read_xml(self.file, encoding='utf-16')
-        df = df.sort_values(by='Name', key=lambda col: col.str.lower()).reset_index(drop=True)
-        df[['X\n\n', 'Y\n\n', 'Z\n\n']] = df['Coordinate'].str.split('  ', expand = True)
-        df.drop('Coordinate', axis = 1, inplace = True)
-        for col in ['X\n\n', 'Y\n\n', 'Z\n\n']:
-            df[col] = df[col].apply(lambda x : float(x))
-        df.rename(columns={'Name':'Repère'}, inplace = True)
-        df.set_index('Repère', inplace = True)
-        return (df)
+        try:
+            df = pd.read_xml(self.file, encoding='utf-16')
+            if df.isnull().values.any():
+                return None
+            df = df.sort_values(by='Name', key=lambda col: col.str.lower()).reset_index(drop=True)
+            df[['X\n\n', 'Y\n\n', 'Z\n\n']] = df['Coordinate'].str.split('  ', expand = True)
+            df.drop('Coordinate', axis = 1, inplace = True)
+            for col in ['X\n\n', 'Y\n\n', 'Z\n\n']:
+                df[col] = df[col].apply(lambda x : float(x))
+            df.rename(columns={'Name':'Repère'}, inplace = True)
+            df.set_index('Repère', inplace = True)
+            return (df)
+        except:
+            return (pd.DataFrame())
+        
     
     def check_mistake(self):
         mistakes = []
@@ -376,7 +393,7 @@ class Ui_MainWindow(object):
         if mistakes:
 
             msg = QtWidgets.QMessageBox()
-            msg.setIcon(QtWidgets.QMessageBox.Critical)
+            msg.setIcon(QtWidgets.QMessageBox.Warning)
             if len(mistakes) > 1:
                 msg.setText(f"Les points {', '.join(mistakes)} sont sans équivalences")
             else :
